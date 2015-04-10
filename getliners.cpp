@@ -66,7 +66,7 @@ aMap build_map(const char *filename,const char *delims="\r \t\n"){
   while(pFile.getline(buffer,LENS)){
     char *key = strtok(buffer,delims);
     while(key!=NULL){
-      ret.insert(std::make_pair(strdup(key),1));
+      ret.insert(std::make_pair(strdup(key),0));
       key =strtok(NULL,delims);
     }
   }
@@ -159,7 +159,7 @@ int main(int argc, char *argv[]){
       int hit=(it!=asso.end());
       if((doCompl==0&&hit) ||(doCompl==1&&hit==0) ){
 	printf("%s",original);
-	it->second =0;
+	it->second++;
       }
     }
   }else{
