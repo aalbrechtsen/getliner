@@ -7,7 +7,7 @@ This is a general tool for extract lines from newline seperated textfiles (can b
 
 
 
-g++ getliner.cpp -lz -O3 -o getliner
+g++ getliners.cpp -lz -O3 -o getliner
 
 
 Program can either extract specific lines, or "keys". The linenumbers to extract must be 1-indexed (first line i 1). When using keys, you must supply which column to 'grep' for. The program builds an associative array of the keys. And therefore only a single pass of the datafile is required.
