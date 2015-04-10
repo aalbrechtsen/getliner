@@ -178,8 +178,10 @@ int main(int argc, char *argv[]){
     }
   }
 
-  FILE *fp = fopen(infokeys,"w");
-  printMap(asso,fp);
-  fclose(fp);
+  if(infokeys!=NULL){
+    FILE *fp = fopen(infokeys,"w");
+    printMap(asso,fp);
+    fclose(fp);
+  }
   return 0;
 }
