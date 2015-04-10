@@ -79,7 +79,7 @@ aMap build_map(const char *filename,const char *delims="\r \t\n"){
 
 int main(int argc, char *argv[]){
   if(argc==1){
-    fprintf(stderr,"\tNeeded: -c column -d delimter -k keysfile -f infile -b bufferSize\n\n");
+    fprintf(stderr,"\tNeeded: -c column -d delimeter -k keysfile -f infile -b bufferSize\n\n");
     fprintf(stderr,"\toptional: -b bufferSize (for long lines) -v 1 (for complement) -l lineFile -i infoOutFile \n\n");
     fprintf(stderr,"\texample1: to grep for all instances in file: \'keys\', in column 4 of file: \'vals\'\n");
     fprintf(stderr,"\t\t./getliners  -k key -f vals  -c 4\n");
@@ -116,7 +116,7 @@ int main(int argc, char *argv[]){
   
    else {
       printf("\tUnknown arguments: %s\n",argv[argPos]);
-      printf("USE -c column -d delimter -k keysfile -f infile\n");
+      printf("USE -c column -d delimeter -k keysfile -f infile\n");
       return 0;
     }
     argPos+=2;
