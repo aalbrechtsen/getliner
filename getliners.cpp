@@ -189,7 +189,7 @@ int main(int argc, char *argv[]){
     }
   }
 
-  fprintf(stdout,"number of matches:%d\n",nMatch);
+  fprintf(stderr,"number of matches:%d\n",nMatch);
   if(infokeys!=NULL){
     FILE *fp = fopen(infokeys,"w");
     printMap(asso,fp);
