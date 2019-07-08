@@ -80,7 +80,7 @@ aMap build_map(const char *filename,const char *delims="\r \t\n"){
 int main(int argc, char *argv[]){
   if(argc==1){
     fprintf(stderr,"\tNeeded: -c column -d delimter -k keysfile -f infile -b bufferSize\n\n");
-    fprintf(stderr,"\toptional: -b bufferSize (for long lines) -v 1 (for complement) -l lineFile -i infoOutFile \n\n");
+    fprintf(stderr,"\toptional: -b bufferSize (for long lines) -v 1 (for complement) -l lineFile -i infoOutFile  -s skipNlines\n\n");
     fprintf(stderr,"\texample1: to grep for all instances in file: \'keys\', in column 4 of file: \'vals\'\n");
     fprintf(stderr,"\t\t./getliners  -k key -f vals  -c 4\n");
     
@@ -96,6 +96,8 @@ int main(int argc, char *argv[]){
   const char* datafile = NULL;
   const char* infokeys = NULL; 
   int doCompl =0;
+  int skip =0;
+  int nMatch=0;
   while(argPos <argc){
     if(strcmp(argv[argPos],"-c")==0)
       extractCol  = atoi(argv[argPos+1]);
@@ -113,7 +115,8 @@ int main(int argc, char *argv[]){
      doCompl = atoi(argv[argPos+1]);
    else if(strcmp(argv[argPos],"-b")==0)
      LENS = atoi(argv[argPos+1]);
-  
+   else if(strcmp(argv[argPos],"-s")==0)
+     skip = atoi(argv[argPos+1]); 
    else {
       printf("\tUnknown arguments: %s\n",argv[argPos]);
       printf("USE -c column -d delimter -k keysfile -f infile\n");
@@ -137,10 +140,15 @@ int main(int argc, char *argv[]){
   }
   char buffer[LENS];
   char *original = new char[LENS];
-
+  int nLine =  0; 
   if(asso.size()!=0){
     fprintf(stderr,"Using keys file for extracting lines\n");
     while(gzgets(gz,buffer,LENS)){
+      if(skip!=0 && nLine < skip){
+	printf("%s",buffer);
+	continue;
+      }
+      nLine++;
       //      fprintf(stderr,"here extractCol=%d\n",extractCol);
       strcpy(original,buffer);
       char *cmp = strtok(buffer,delims);
@@ -157,9 +165,11 @@ int main(int argc, char *argv[]){
       //      fprintf(stderr,"looking for cmp=%s\n",cmp);
       aMap::iterator it = asso.find(cmp);
       int hit=(it!=asso.end());
+      
       if((doCompl==0&&hit) ||(doCompl==1&&hit==0) ){
 	printf("%s",original);
 	it->second++;
+	nMatch++;
       }
     }
   }else{
@@ -179,6 +189,7 @@ int main(int argc, char *argv[]){
     }
   }
 
+  fprintf(stdout,"number of matches:%d\n",nMatch);
   if(infokeys!=NULL){
     FILE *fp = fopen(infokeys,"w");
     printMap(asso,fp);
