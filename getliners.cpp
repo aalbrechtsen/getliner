@@ -145,6 +145,7 @@ int main(int argc, char *argv[]){
     fprintf(stderr,"Using keys file for extracting lines\n");
     while(gzgets(gz,buffer,LENS)){
       if(skip!=0 && nLine < skip){
+	nLine++;
 	printf("%s",buffer);
 	continue;
       }
@@ -190,6 +191,7 @@ int main(int argc, char *argv[]){
   }
 
   fprintf(stderr,"number of matches:%d\n",nMatch);
+  fprintf(stderr,"number of lines (not skipped):%d\n",nLine-skip);
   if(infokeys!=NULL){
     FILE *fp = fopen(infokeys,"w");
     printMap(asso,fp);
